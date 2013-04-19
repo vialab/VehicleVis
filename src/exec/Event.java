@@ -14,7 +14,6 @@ import touch.WCursor;
 import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
-import util.DWin;
 import util.MatrixUtil;
 import Jama.Matrix;
 import TimingFrameExt.FloatEval;
@@ -43,7 +42,6 @@ public class Event {
    public static void createLens(int posX, int posY, float r) {
       // Hackhack: limit the amount of lens to 3 for now
       if (SSM.lensList.size() >= 2) return;
-      if (SSM.presentationMode) return;
       
       LensAttrib la = new LensAttrib( posX, posY, r, 0);      
       la.magicLensType = LensAttrib.LENS_DEPTH;
@@ -52,15 +50,12 @@ public class Event {
       
       
       // Debug
-      DWin.instance().msg("Lens : " + posX + " " + posY + " " + r);
    }
    
    ////////////////////////////////////////////////////////////////////////////////
    // Remove a lens at (posX, posY)
    ////////////////////////////////////////////////////////////////////////////////
    public static void removeLens(int posX, int posY) {
-      if (SSM.presentationMode) return;
-      
       // TODO: This is a bit buggy due to the removal while still iterating the list
       for (int i=0; i < SSM.lensList.size(); i++) {
          float x = (float)posX - (float)SSM.lensList.elementAt(i).magicLensX;
@@ -77,8 +72,6 @@ public class Event {
    // Move lens by delta
    ////////////////////////////////////////////////////////////////////////////////
    public static void moveLens(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       for (int i=0; i < SSM.lensList.size(); i++) {
          if (SSM.lensList.elementAt(i).magicLensSelected == 1) {
             SSM.lensList.elementAt(i).magicLensX += (posX - oldPosX);   
@@ -111,7 +104,6 @@ public class Event {
    }
    */
    public static void moveLensTUIO(int posX, int posY, int oldPosX, int oldPosY, WCursor cursor) { 
-      if (SSM.presentationMode) return;
       if (SSM.lensList.isEmpty() == true) return; // sanity
       
       LensAttrib la = cursor.lensReference;
@@ -162,8 +154,6 @@ public class Event {
    // Rotate the lens handle to change the depth parameter
    ////////////////////////////////////////////////////////////////////////////////
    public static void moveLensHandle(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       for (int i=0; i < SSM.lensList.size(); i++) {
          float x = (float)oldPosX - (float)SSM.lensList.elementAt(i).magicLensX;
          float y = (float)oldPosY - (float)SSM.lensList.elementAt(i).magicLensY;
@@ -204,8 +194,6 @@ public class Event {
    // Resize lens by delta
    ////////////////////////////////////////////////////////////////////////////////
    public static void resizeLens(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       for (int i=0; i < SSM.lensList.size(); i++) {
          float x = (float)posX - (float)SSM.lensList.elementAt(i).magicLensX;
          float y = (float)posY - (float)SSM.lensList.elementAt(i).magicLensY;
@@ -231,8 +219,6 @@ public class Event {
    // Resize the lens by delta
    ////////////////////////////////////////////////////////////////////////////////
    public static void resizeLens(int posX, int posY, int delta) {
-      if (SSM.presentationMode) return;
-      
       for (int i=0; i < SSM.lensList.size(); i++) {
          float x = (float)posX - (float)SSM.lensList.elementAt(i).magicLensX;
          float y = (float)posY - (float)SSM.lensList.elementAt(i).magicLensY;
@@ -254,7 +240,6 @@ public class Event {
    // Change lens cutting plane
    ////////////////////////////////////////////////////////////////////////////////
    public static int scrollLens(int posX, int posY, int unit) {
-      
       int flag = 0;
       long systemTime = System.currentTimeMillis();
       for (int i=0; i < SSM.lensList.size(); i++) {
@@ -309,8 +294,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // The max and min should be controlled at a higher level
    ////////////////////////////////////////////////////////////////////////////////
    public static void setCameraZoom(float amt) {
-      if (SSM.presentationMode) return;
-      
       DCCamera.instance().move(amt); 
       SSM.refreshOITTexture = true;
       SSM.refreshMagicLens = true;
@@ -320,8 +303,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Change camera position - axis aligned rotation
    ////////////////////////////////////////////////////////////////////////////////
    public static void setCameraTUIO(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       // Just a hack here
       float valx = (float)(posX - oldPosX);
       SSM.rotateY += valx;
@@ -337,8 +318,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Change camera position
    ////////////////////////////////////////////////////////////////////////////////
    public static void setCamera(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       double basis[][] = {
             { DCCamera.instance().right.x, DCCamera.instance().right.y, DCCamera.instance().right.z, 0 },      
             { DCCamera.instance().up.x, DCCamera.instance().up.y, DCCamera.instance().up.z, 0 },      
@@ -399,8 +378,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Scroll filter panel
    ////////////////////////////////////////////////////////////////////////////////
    public static void setScrollPanelOffset(PaneAttrib attrib, int posY, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       attrib.yOffset -= (posY - oldPosY);   
       if (attrib.yOffset < attrib.height)
          attrib.yOffset = attrib.height;
@@ -412,8 +389,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Check drag movement against GUI elements
    ////////////////////////////////////////////////////////////////////////////////
    public static void checkGUIDrag(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       // Check the top level UI elements
       if (SSM.topElement == SSM.ELEMENT_DOCUMENT) {
          SSM.docAnchorX += (posX - oldPosX);   
@@ -448,14 +423,10 @@ System.out.println("<Near plane: " + la.nearPlane);
    
    
    public static void dragDocumentPanelTUIO(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       if (posX < SSM.docAnchorX + SSM.docWidth*0.8)
          dragDocumentPanel(posX, posY, oldPosX, oldPosY);
    }
    public static void dragDocumentPanel(int posX, int posY, int oldPosX, int oldPosY) {
-      if (SSM.presentationMode) return;
-      
       SSM.docAnchorX += (posX - oldPosX);   
       SSM.docAnchorY -= (posY - oldPosY);   
    }
@@ -464,14 +435,10 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Scroll document panel
    ////////////////////////////////////////////////////////////////////////////////
    public static void checkDocumentScrollTUIO(int posX, int posY, int unit) {
-      if (SSM.presentationMode) return;
-      
       if (posX > SSM.docAnchorX + SSM.docWidth*0.8) 
          checkDocumentScroll(posX, posY, unit);
    }
    public static void checkDocumentScroll(int posX, int posY, int unit) {
-      if (SSM.presentationMode) return;
-      
       SSM.isDocScroll = true;
       if (unit < 0) {
          // Prevent underflow
@@ -765,7 +732,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Selection semantic with the mouse
    ////////////////////////////////////////////////////////////////////////////////
    public static void handleMouseSelect(Integer obj) {
-      if (SSM.presentationMode) return;
       
       if (SSM.selectedGroup.size() > 0 ) {
          // If control key is not held down, clear
@@ -812,7 +778,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Toggle, selections are either on or off
    ////////////////////////////////////////////////////////////////////////////////
    public static void handleTUIOSelect(Integer obj) {
-      if (SSM.presentationMode) return;
       
       Vector<Integer> selection = new Vector<Integer>();
       int finalID = obj;
@@ -872,8 +837,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Hide the interactive panels
    ////////////////////////////////////////////////////////////////////////////////
    public static void hidePanel() {
-      if (SSM.presentationMode) return;
-      
       //if (SSM.hidePanel == true) return;
       //SSM.hidePanel = true;
       //Animator legend = PropertySetter.createAnimator(500, SSM.instance(), "DoffsetX", new FloatEval(), SSM.DoffsetX, SSM.DoffsetX-1000);
@@ -893,8 +856,6 @@ System.out.println("<Near plane: " + la.nearPlane);
    // Show the interactive panels
    ////////////////////////////////////////////////////////////////////////////////
    public static void showPanel() {
-      if (SSM.presentationMode) return;
-      
       //if (SSM.hidePanel == false) return;
       //SSM.hidePanel = false;
       //Animator legend = PropertySetter.createAnimator(500, SSM.instance(), "DoffsetX", new FloatEval(), SSM.DoffsetX, SSM.DoffsetX+1000);

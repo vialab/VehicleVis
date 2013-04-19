@@ -11,7 +11,6 @@ import model.LensAttrib;
 import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
-import util.DWin;
 
 import datastore.SSM;
 import exec.Event;
@@ -472,7 +471,6 @@ public class TUIOListener implements TuioListener {
          double newDistance = dist(simX, simY, x1, y1, 1, 1);
          
          if (oldDistance < newDistance) {
-System.out.println("Spread detected");    
             if (wcursor.element == SSM.ELEMENT_NONE) {
                double dist = DCCamera.instance().eye.sub(new DCTriple(0,0,0)).mag();
                if (dist < 15) return;
@@ -480,7 +478,6 @@ System.out.println("Spread detected");
                //DCCamera.instance().move(1.1f);
             }
          } else if (oldDistance > newDistance) {
-System.out.println("Pinch detected");
             if (wcursor.element == SSM.ELEMENT_NONE) {
                double dist = DCCamera.instance().eye.sub(new DCTriple(0,0,0)).mag();
                if (dist > 90) return;
@@ -497,6 +494,7 @@ System.out.println("Pinch detected");
       ////////////////////////////////////////////////////////////////////////////////
       // Execute any move event
       ////////////////////////////////////////////////////////////////////////////////
+      if (SSM.presentationMode == true) return;
       if (wcursor.numUpdate < 2) return; // Lag the update a bit to further distinguish swipe and move events
       
       if (wcursor.element == SSM.ELEMENT_NONE){
@@ -508,7 +506,6 @@ System.out.println("Pinch detected");
          Event.moveLensTUIO(x1, y1, x2, y2, wcursor);
          if (wcursor.lensReference == null) {
             eventTable.remove(wcursor.sessionID);
-            DWin.instance().debug("Removed a lens");   
          }
       } else if (wcursor.element == SSM.ELEMENT_LENS_HANDLE) {
          Event.moveLensHandle(x1, y1, x2, y2);
@@ -597,14 +594,13 @@ System.out.println("Pinch detected");
       
       
       
-      
       // Check to see if we are activating lens or the document panel
       // If there are exactly 2 points currently, and they are sufficiently close to each other, and 
       // they are over the same type of element then create a document panel
       //if (w.state == WCursor.STATE_NOTHING && w.element == SSM.ELEMENT_NONE) {
       if ( (w.state == WCursor.STATE_HOLD) && w.element == SSM.ELEMENT_NONE && w.points.size() < 10) {
          Vector<WCursor> len = this.findSimilarCursorPixel(w, 100, 500);
-         if (len.size() == 1) {
+         if (len.size() == 1 && SSM.presentationMode == false) {
             if (len.size() == 1 && (len.elementAt(0).state == WCursor.STATE_HOLD && len.elementAt(0).points.size() < 10 )) {
                // Adjust the lens coordinate such that the 2 points are on the circumference of the lens
                System.out.print("activate lens");   
@@ -642,12 +638,12 @@ System.out.println("Pinch detected");
             SSM.presentationMode = ! SSM.presentationMode;
          } else {
             // Approximate the swipe to only work in the upper portion of the screen
-            if ( (SSM.windowHeight-w.y * SSM.windowHeight) > (SSM.DoffsetY - 50)) {
+            if ( SSM.presentationMode == false && (SSM.windowHeight-w.y * SSM.windowHeight) > (SSM.DoffsetY - 50)) {
                if (w.swipeDirection == WCursor.LEFT) Event.hidePanel();
                if (w.swipeDirection == WCursor.RIGHT) Event.showPanel(); 
             }
          }
-      } else if (w.points.size() < 4 && findSimilarCursorPixel(w, 0, 400).size() == 0) {
+      } else if (SSM.presentationMode == false && w.points.size() < 4 && findSimilarCursorPixel(w, 0, 400).size() == 0) {
          // Only clickable elements can send a tap event
          if (w.element == SSM.ELEMENT_NONE || w.element == SSM.ELEMENT_LENS || w.element == SSM.ELEMENT_LENS_RIM ||
              w.element == SSM.ELEMENT_DOCUMENT ||
@@ -708,7 +704,7 @@ System.out.println("Pinch detected");
               synchronized( tapPoints ) {
                  for (int i=0; i < tapPoints.size(); i++) {
                     WCursor w = tapPoints.elementAt(i);    
-                    if (System.currentTimeMillis() - w.endTimestamp > 250) {
+                    if (SSM.presentationMode == false && System.currentTimeMillis() - w.endTimestamp > 250) {
                        if (w.tapCount == 1) {
                           if (w.element == SSM.ELEMENT_DOCUMENT && SSM.docActive == true) {
                              SSM.docActive = false;
@@ -738,6 +734,7 @@ System.out.println("Pinch detected");
    public Runnable update = new Runnable() {
       public void run() {
          while(true) {
+            if (SSM.presentationMode == true) continue;
             try {
                synchronized(eventTable) {
                   for (WCursor w : eventTable.values()) {
@@ -754,7 +751,7 @@ System.out.println("Pinch detected");
                // Clearn up deadzones
                for (WCursor w : deadzone.values()) {
                   if (System.currentTimeMillis() - w.endTimestamp >= 600) {
-                     System.out.println("Cleaning up deadzones");
+                     //System.out.println("Cleaning up deadzones");
                      deadzone.remove(w.sessionID);   
                   }
                }

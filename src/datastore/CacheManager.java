@@ -19,7 +19,6 @@ import db.DCTag;
 import db.QueryObj;
 
 import util.DCUtil;
-import util.DWin;
 import util.SerializeUtil;
 
 
@@ -169,7 +168,6 @@ System.out.println("Debugging");
       
       System.out.println("Total time to bring up system : " + (end-start));
       System.out.flush();
-      DWin.instance().msg("Total time to bring up cache : " + (end-start));
       
       
       // Attempt initialize the system from on disk cache

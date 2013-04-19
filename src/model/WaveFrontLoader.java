@@ -8,7 +8,6 @@ import datastore.Const;
 
 import parser.StatManager;
 import util.BSPTree;
-import util.DWin;
 
 // A loader to load a customized OBJ file
 public class WaveFrontLoader {
@@ -130,7 +129,6 @@ public class WaveFrontLoader {
       //facelist.removeAllElements();
       
       // Close reader and cleanup
-      DWin.instance().debug("Total vertices: " + vertex_list.size());
       reader.close();
       System.gc(); // Please please collect some crap
       

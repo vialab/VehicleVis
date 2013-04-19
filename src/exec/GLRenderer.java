@@ -18,7 +18,6 @@ import model.DCTriple;
 import model.ModelRenderer;
 
 import touch.VFeedbackTask;
-import util.DWin;
 import util.GraphicUtil;
 import util.ImageLoader;
 
@@ -42,9 +41,9 @@ public class GLRenderer implements GLEventListener {
    ModelRenderer model_task = new ModelRenderer();
    FilterTask filter_task = new FilterTask();
    LegendTask legend_task = new LegendTask();
-   SaveLoadTask save_task = new SaveLoadTask();
+   //SaveLoadTask save_task = new SaveLoadTask();
    DomainFilterTask domain_task = new DomainFilterTask();
-   QuestionTask question_task = new QuestionTask();
+   //QuestionTask question_task = new QuestionTask();
    VFeedbackTask feedback_task = new VFeedbackTask();
    
    
@@ -124,7 +123,7 @@ public class GLRenderer implements GLEventListener {
       filter_task.render(gl2);
       legend_task.render(gl2);
       domain_task.render(gl2);
-      question_task.render(gl2);
+      //question_task.render(gl2);
       feedback_task.render(gl2);
       
       
@@ -143,7 +142,7 @@ public class GLRenderer implements GLEventListener {
             domain_task.picking(gl2, point.x, point.y, point.z);
             filter_task.picking(gl2, point.x, point.y, point.z);
             legend_task.picking(gl2, point.x, point.y, point.z);
-            question_task.picking(gl2, point.x, point.y, point.z);
+            //question_task.picking(gl2, point.x, point.y, point.z);
             model_task.picking(gl2, point.x, point.y, point.z);
          }
          SSM.l_mouseClicked = false;
@@ -167,7 +166,6 @@ public class GLRenderer implements GLEventListener {
       if (SSM.captureScreen) {
          String s = SSM.captureName == null? SSM.instance().now() : SSM.captureName;
          GraphicUtil.screenCap(gl2, s);
-         DWin.instance().debug("Saving Screen Cap : " + s);
          SSM.captureScreen = false;
          SSM.captureName = null;
       }
@@ -208,9 +206,6 @@ public class GLRenderer implements GLEventListener {
    public void init(GLAutoDrawable glDrawable) {
       GL2 gl2 = glDrawable.getGL().getGL2();
       
-      DWin.instance().debug( gl2.glGetString(GL2.GL_VENDOR));
-      DWin.instance().debug( gl2.glGetString(GL2.GL_VERSION));
-      DWin.instance().debug( gl2.getGL2().glGetString(GL3.GL_SHADING_LANGUAGE_VERSION));
       
       
       
@@ -248,7 +243,6 @@ public class GLRenderer implements GLEventListener {
       // Check a few openGL specific things
       int maxTex[] = new int[1];  
       gl2.glGetIntegerv(GL2.GL_MAX_TEXTURE_SIZE, maxTex, 0);
-      DWin.instance().error("Maximum supported texture size is : " + maxTex[0]);
       
       
       // Initialize the rendering items
@@ -259,14 +253,16 @@ public class GLRenderer implements GLEventListener {
       filter_task.init(gl2);
       legend_task.init(gl2);
       domain_task.init(gl2);
-      question_task.init(gl2);
+      //question_task.init(gl2);
       feedback_task.init(gl2);
       
       // Hack test
+      /*
       if (SSM.useScenario) {
          question_task.q.firstElement().startTime = System.currentTimeMillis();
          question_task.q.firstElement().set();
       }
+      */
       
       
       

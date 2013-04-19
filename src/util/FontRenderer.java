@@ -20,7 +20,6 @@ public class FontRenderer {
       String fontFamily = "Arial";
 
       // Register a variety of font sizes
-      DWin.instance().msg("Creating fonts...[" + 1 + " - " + MAX_SIZE + "]");
       for (int i=1; i <= MAX_SIZE; i++) {
          TextRenderer t = new TextRenderer(new Font( fontFamily, Font.PLAIN, i));
          t.setSmoothing(false);

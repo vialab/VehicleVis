@@ -15,7 +15,6 @@ import model.DCColour;
 import org.jdesktop.animation.timing.Animator;
 
 import util.DCUtil;
-import util.DWin;
 import util.GraphicUtil;
 import util.TextureFont;
 
@@ -143,9 +142,6 @@ public class DCScrollPane {
    ////////////////////////////////////////////////////////////////////////////////
    public void renderToTexture(Color c) {
       
-      if (texPanelHeight > 8192) {
-         DWin.instance().error("Cannot process texture bigger than 8192");   
-      }
       
       // Recreate the textureRenderer to make sure we have the write context  
       texture = null;

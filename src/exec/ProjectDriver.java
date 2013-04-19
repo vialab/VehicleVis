@@ -19,7 +19,6 @@ import TUIO.TuioClient;
 
 import touch.TUIOListener;
 import util.ALogger;
-import util.DWin;
 import datastore.CacheManager;
 import datastore.Const;
 import datastore.SSM;
@@ -90,7 +89,6 @@ public class ProjectDriver {
          TuioClient client = new TuioClient();
          client.addTuioListener(new TUIOListener());
          client.connect();
-DWin.instance().debug("TUIO is true");         
       } else {
          canvas.addMouseListener(eventManager);
          canvas.addMouseMotionListener(eventManager);

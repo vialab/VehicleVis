@@ -10,7 +10,6 @@ import java.util.Vector;
 import model.DCColour;
 
 import util.DCUtil;
-import util.DWin;
 import util.StringUtil;
 
 import com.jogamp.opengl.util.awt.TextureRenderer;
@@ -146,10 +145,6 @@ public class TextPane {
       textPaneHeight = Math.max(1, textPaneHeight); // prevent JOGL from complaining about 0 size texture
       textPaneWidth =  Math.max(1, textPaneWidth);  // prevent JOGL from complaining about 0 size texture
       
-      DWin.instance().msg("Panel height is : " + textPaneHeight);
-      if (textPaneHeight > 8192) {
-         DWin.instance().error("Cannot support texture height > 8129");   
-      }
    }
    
    

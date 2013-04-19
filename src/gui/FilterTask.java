@@ -15,7 +15,6 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
 import util.ALogger;
 import util.DCUtil;
-import util.DWin;
 import TimingFrameExt.DoubleArrayEval;
 import TimingFrameExt.DoubleEval;
 import TimingFrameExt.SliderEval;
@@ -656,7 +655,6 @@ System.out.println("In Unfocus");
          // Hack
          ALogger.instance().log("Time Widget :" + SSM.startYear + " " + SSM.endYear + " " + SSM.startMonth + " " + SSM.endMonth); 
       }
-      DWin.instance().msg("New data rage " + str_lowIdx + " to " + str_highIdx);
       SSM.startTimeFrame = str_lowIdx;
       SSM.endTimeFrame   = str_highIdx;
       SSM.startMonth = (int)monthSlider.lowIdx;

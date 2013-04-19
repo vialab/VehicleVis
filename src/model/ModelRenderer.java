@@ -14,7 +14,6 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
 import touch.WCursor;
 import util.DCCamera;
-import util.DWin;
 import util.GraphicUtil;
 import util.TextureFont;
 import TimingFrameExt.FloatEval;
@@ -79,11 +78,14 @@ public class ModelRenderer extends BaseModelRenderer {
          SSM.dirtyGL = 0;
       }
       
+      this.renderIntegratedView(gl2);
+      /*
       if (SSM.use3DModel == true) {
          this.renderIntegratedView(gl2);
       } else {
          this.renderChartsOnly(gl2);
       }
+      */
       
    }
    
@@ -586,133 +588,6 @@ public class ModelRenderer extends BaseModelRenderer {
    public static float CHART_GAP_W = 200;
    public static float CHART_GAP_H =  100;
    public static float CHART_NUM = 6;
-   
-   
-   ////////////////////////////////////////////////////////////////////////////////
-   // Render only the chart
-   // No 3D model
-   ////////////////////////////////////////////////////////////////////////////////
-   public void renderChartsOnly(GL2 gl2) {
-      String list[] = this.getComponentUnsorted(gl2);
-      int startIdx = CacheManager.instance().getDateKey( SSM.startTimeFrame ) == null ? 0:
-         CacheManager.instance().getDateKey( SSM.startTimeFrame );
-      int endIdx   = CacheManager.instance().getDateKey( SSM.endTimeFrame) == null ? CacheManager.instance().timeLineSize:
-         CacheManager.instance().getDateKey( SSM.endTimeFrame );      
-     
-      int counter = 0;
-      Hashtable<String, String> uniqueTable = new Hashtable<String, String>();
-      
-      float startX = CHART_ANCHOR_X;
-      float startY = CHART_ANCHOR_Y;
-      
-      
-      ////////////////////////////////////////////////////////////////////////////////
-      // Render the heat maps
-      ////////////////////////////////////////////////////////////////////////////////
-      setOrthonormalView(gl2, 0, SSM.windowWidth, 0, SSM.windowHeight); {
-         for (String key : list) {
-            DCComponent comp = MM.currentModel.componentTable.get(key);
-            
-            if (comp.hasContext == false) continue;
-            if (comp.id < 0) continue;
-            
-            
-            // If local mode than don't render components that are not related
-//            comp.cchart.active = true;
-//            if (SSM.useLocalFocus == true) {
-//               if (SSM.selectedGroup.size() > 0 && ! SSM.relatedList.contains(comp.id))  {
-//                  comp.cchart.active = false;
-//               } else {
-//                  comp.cchart.active = true;   
-//               }
-//            }             
-            
-
-            // Check parent and model table capability in aggregation mode
-            boolean skip = false;
-            if (SSM.useAggregate == true) {
-               Integer parentId = comp.id;
-               while(true) {
-                  parentId = HierarchyTable.instance().getParentId(parentId);   
-                  
-                  if (parentId == null) break;
-                  if (MM.currentModel.componentTableById.get(parentId) != null) {
-                     skip = true;
-                     break;
-                  }
-               } // end while            
-            } else {
-               skip = false; 
-            }
-            if (skip == true) continue;
-            
-            
-            
-            
-            if (uniqueTable.contains(comp.baseName)) continue;
-            uniqueTable.put(comp.baseName, comp.baseName);
-            
-            int occ[] = this.getOccCounts(comp, startIdx, endIdx);
-            
-            comp.cchart.anchorX = startX;
-            comp.cchart.anchorY = startY;
-            comp.cchart.colour = comp.colour;
-            comp.cchart.renderBorder(gl2);
-            comp.cchart.render(gl2);
-            
-            comp.cchart.tf.width = comp.cchart.width;
-            comp.cchart.tf.height = comp.cchart.height;
-            comp.cchart.tf.anchorX = comp.cchart.anchorX;
-            comp.cchart.tf.anchorY = comp.cchart.anchorY;
-            if (SSM.useComparisonMode==true) {
-               comp.cchart.setLabel(comp.baseName + " " + occ[2] + "/" + occ[0]);
-            } else {
-               comp.cchart.setLabel(comp.baseName + " " + (occ[2]+occ[3]) + "/" + (occ[0]+occ[1]));
-            }
-            
-            //comp.cchart.setLabel(comp.baseName);
-            comp.cchart.tf.render(gl2);
-            counter += 1;
-            
-            startY += (comp.cchart.height + 10);
-            if (startY > 700) {
-               startX += 210;
-               startY = CHART_ANCHOR_Y;
-            }
-            
-         } // end for
-      } // end ortho
-      
-      
-      
-      ////////////////////////////////////////////////////////////////////////////////
-      // Render the scrollable filters
-      ////////////////////////////////////////////////////////////////////////////////
-      //this.renderScrollFilter(gl2);
-      
-      
-      ////////////////////////////////////////////////////////////////////////////////
-      // Render the text panel
-      ////////////////////////////////////////////////////////////////////////////////
-      this.dcTextPanel.displayH = SSM.docHeight;
-      this.dcTextPanel.displayW = SSM.docWidth;
-      SSM.docAnchorX = SSM.windowWidth - 1.1f * SSM.docWidth;
-      SSM.docActive = true;
-      this.dcTextPanel.render(gl2);
-      this.dcTextPanel.displayH = 0;
-      this.dcTextPanel.displayW = 0;
-      
-      
-      ////////////////////////////////////////////////////////////////////////////////
-      // Renders a tool tip
-      ////////////////////////////////////////////////////////////////////////////////
-      setOrthonormalView(gl2, 0, SSM.windowWidth, 0, SSM.windowHeight); {
-         //DCTip.render(gl2);
-         for (DCTip tip : SSM.tooltips.values()) {
-            tip.render(gl2);
-         }
-      }      
-   }
    
    public Integer pickingChartsOnly(GL2 gl2, float px, float py) {
       IntBuffer buffer = (IntBuffer)GLBuffers.newDirectGLBuffer(GL2.GL_UNSIGNED_INT, 512);

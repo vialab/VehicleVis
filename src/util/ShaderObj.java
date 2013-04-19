@@ -65,7 +65,7 @@ public class ShaderObj {
    public int getUniformId(GL2 gl2, String name) {
       int id = gl2.glGetUniformLocation(programID, name );   
       if (id < 0) {
-         System.err.println("Unable to find : " + name);
+         //System.err.println("Unable to find : " + name);
          //System.exit(0);
       }
       return id;
@@ -73,7 +73,7 @@ public class ShaderObj {
    public int getUniformId(GL3 gl3, String name) {
       int id = gl3.glGetUniformLocation(programID, name );   
       if (id < 0) {
-         System.err.println("Unable to find : " + name);
+         //System.err.println("Unable to find : " + name);
          System.exit(0);
       }
       return id;

@@ -15,7 +15,6 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 import TimingFrameExt.FloatEval;
 
 import touch.WCursor;
-import util.DWin;
 import util.ImageLoader;
 import util.TextureFont;
 import model.DCTriple;
@@ -640,14 +639,6 @@ public class SSM {
             makeAttrib.selected, 
             modelAttrib.selected);   
       
-      DWin.instance().debug("====================================");
-      Enumeration<Integer> e = h.keys();
-      while (e.hasMoreElements()) {
-         Integer key = e.nextElement();   
-         String part = HierarchyTable.instance().partTable.get(key).elementAt(0);
-         DWin.instance().debug( part + " " + h.get(key));
-      }
-      DWin.instance().debug("====================================");
       
    }
    

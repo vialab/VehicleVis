@@ -18,7 +18,6 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
-import util.DWin;
 import util.GraphicUtil;
 import util.MatrixUtil;
 import util.ShaderObj;
@@ -244,10 +243,6 @@ public abstract class BaseModelRenderer implements RenderTask {
       
       
 
-      
-      
-      DWin.instance().error(SSM.startMonth + " " + SSM.endMonth);
-      DWin.instance().error("Starting indices: " + startIdx + " " + endIdx );
       
       
      
@@ -876,7 +871,6 @@ public abstract class BaseModelRenderer implements RenderTask {
       }      
       
       
-      DWin.instance().debug("startIndex:" + startIdx + "  endIdnex:" + endIdx);
       
       
       if (SSM.selectedGroup.size() >= 0 ) {
@@ -930,8 +924,6 @@ public abstract class BaseModelRenderer implements RenderTask {
                   SSM.t2Start);
          }
          
-         DWin.instance().debug("Panel 1 size : " + dcTextPanel.t1.documentList.size());
-         DWin.instance().debug("Panel 2 size : " + dcTextPanel.t2.documentList.size());
       } else {
          dcTextPanel.t1.tagList.clear();
          dcTextPanel.t2.tagList.clear();         
@@ -1382,7 +1374,6 @@ public abstract class BaseModelRenderer implements RenderTask {
    // Copyright (c) NVIDIA Corporation. All rights reserved.
    //--------------------------------------------------------------------------------------
      public void InitDualPeelingRenderTargets(GL2 gl) {
-        DWin.instance().msg("SSM height is : " + SSM.windowHeight + " SSM width : " + SSM.windowWidth);
         
         gl.glGenTextures(2, g_dualDepthTexId, 0);
         gl.glGenTextures(2, g_dualFrontBlenderTexId, 0);
