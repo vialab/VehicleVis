@@ -63,8 +63,8 @@ public class ProjectDriver {
       // Fetch and create profile
       //GLProfile profile = GLProfile.get(GLProfile.GL4);
       //System.out.println(GLProfile.glAvailabilityToString());
-      //GLProfile profile = GLProfile.get(GLProfile.GL3bc);
-      GLProfile profile = GLProfile.getMaxProgrammable();
+      GLProfile profile = GLProfile.get(GLProfile.GL3bc);
+      //GLProfile profile = GLProfile.getMaxProgrammable();
      
       GLCapabilities capabilities = new GLCapabilities(profile);
       capabilities.setHardwareAccelerated(true);
