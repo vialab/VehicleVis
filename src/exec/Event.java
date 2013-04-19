@@ -272,14 +272,14 @@ public class Event {
                   double advD    = Math.max(0.3f, remainD*0.05);
                   if (la.nearPlane + advD < totalD)
                      la.nearPlane += advD;
-System.out.println(">Near plane: " + la.nearPlane);                  
+//System.out.println(">Near plane: " + la.nearPlane);                  
                } else {
                   double totalD = DCCamera.instance().eye.sub(new DCTriple(0,0,0)).mag();
                   double remainD = totalD - la.nearPlane;
                   double advD    = Math.max(0.3f, remainD*0.05);
                   if (la.nearPlane - advD > 0) 
                      la.nearPlane -= advD;               
-System.out.println("<Near plane: " + la.nearPlane);                  
+//System.out.println("<Near plane: " + la.nearPlane);                  
                }
                SSM.refreshMagicLens = true;
             }            
@@ -639,7 +639,7 @@ System.out.println("<Near plane: " + la.nearPlane);
             //if (ang < 0) ang += 360.0;
             
             if ( ang >= SSM.lensList.elementAt(i).handleAngle && ang <= SSM.lensList.elementAt(i).handleAngle+40 ) {
-               System.out.println("Selected a lens handle " + ang);
+               //System.out.println("Selected a lens handle " + ang);
                
                SSM.lensList.elementAt(i).handleSelected = true;
                SSM.topElement = SSM.ELEMENT_LENS_HANDLE;
@@ -783,7 +783,7 @@ System.out.println("<Near plane: " + la.nearPlane);
       int finalID = obj;
       if (SSM.useAggregate == true) {
          while (true) {
-            System.out.print(finalID + " > ");
+            //System.out.print(finalID + " > ");
             if (HierarchyTable.instance().groupTable.get(finalID) == null || HierarchyTable.instance().groupTable.get(finalID) == 0) break;
             finalID = HierarchyTable.instance().groupTable.get(finalID);
          }

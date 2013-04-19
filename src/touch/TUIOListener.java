@@ -45,7 +45,7 @@ public class TUIOListener implements TuioListener {
    
    public TUIOListener() {
       super();   
-      System.out.println("Starting timer thread");
+      //System.out.println("Starting timer thread");
       Thread t1 = new Thread(update);
       t1.start();
       //Thread t2 = new Thread(delayTaps);
@@ -222,7 +222,7 @@ public class TUIOListener implements TuioListener {
             if (dist(wc.x, wc.y, w.x, w.y, width, height) < 30) {
                if (Math.abs( wc.timestamp-w.timestamp) < 100) {
                   if (wc.element != SSM.ELEMENT_DOCUMENT && wc.element != SSM.ELEMENT_LENS && wc.element != SSM.ELEMENT_LENS_RIM) {
-                     System.err.println("H2 " + eventTable.size());
+                     //System.err.println("H2 " + eventTable.size());
                      return;   
                   }
                }
@@ -233,7 +233,7 @@ public class TUIOListener implements TuioListener {
             if (dist(wc.x, wc.y, w.x, w.y, width, height) < 500 &&
                 dist(wc.x, wc.y, w.x, w.y, width, height) > 20) {
                if (wc.state == WCursor.STATE_MOVE && wc.element != SSM.ELEMENT_DOCUMENT && wc.element != SSM.ELEMENT_LENS && wc.element != SSM.ELEMENT_LENS_RIM) {
-                  System.err.println("H3 " + eventTable.size());
+                  //System.err.println("H3 " + eventTable.size());
                   return;   
                }
             }
@@ -244,7 +244,7 @@ public class TUIOListener implements TuioListener {
                if (la != null) {
                   float dist = (float)Math.sqrt((posX - la.magicLensX)*(posX - la.magicLensX)  + (posY - la.magicLensY)*(posY - la.magicLensY));       
                   if (dist < la.magicLensRadius+80) {
-                     System.err.println("H3 Lens " + eventTable.size());    
+                     //System.err.println("H3 Lens " + eventTable.size());    
                      
                      // reverse, if lens is selected, don't handle rim at the same time
                      // little hacky here, w and wc refer to the same instance, but w cannot
@@ -259,7 +259,7 @@ public class TUIOListener implements TuioListener {
             if (wc.element == SSM.ELEMENT_DOCUMENT) {
                if (DCUtil.between(posX, SSM.docAnchorX-40, SSM.docAnchorX+SSM.docWidth+40)) {
                   if (DCUtil.between((SSM.windowHeight-posY), SSM.docAnchorY-40, SSM.docAnchorY+SSM.docHeight+40)) {
-                     System.err.println("H3 Document " + eventTable.size());
+                     //System.err.println("H3 Document " + eventTable.size());
                      return;
                   }
                }
@@ -293,17 +293,17 @@ public class TUIOListener implements TuioListener {
          // the lens zone
          if (w.element == SSM.ELEMENT_LENS || w.element == SSM.ELEMENT_LENS_RIM) {
             if (this.findSimilarCursorPixel(w, 0, (int)w.lensReference.magicLensRadius).size() >= 1) {
-               System.err.println("H3.1 " + eventTable.size());
+               //System.err.println("H3.1 " + eventTable.size());
                return;
             }
          } else if (w.element == SSM.ELEMENT_DOCUMENT) {
             if (this.findSimilarCursorPixel(w, 0, 999).size() >= 1) {
-               System.err.println("H3.1 " + eventTable.size());
+               //System.err.println("H3.1 " + eventTable.size());
                return;
             }
          } else if (w.element == SSM.ELEMENT_NONE) {
             if (this.findSimilarCursorPixel(w, 0, 500).size() >= 2) {
-               System.err.println("H3.1 " + eventTable.size());
+               //System.err.println("H3.1 " + eventTable.size());
                return;
             }
          }
@@ -315,9 +315,9 @@ public class TUIOListener implements TuioListener {
          // try to repeat itself
          if (w.element != SSM.ELEMENT_LENS && w.element != SSM.ELEMENT_LENS_RIM && w.element != SSM.ELEMENT_DOCUMENT && w.state != WCursor.STATE_MOVE) {
             for (WCursor deadCursor : deadzone.values()) {
-               System.err.println( w.x*width + " " + w.y*height + " | " + deadCursor.x*width + " " + deadCursor.y*height);
+               //System.err.println( w.x*width + " " + w.y*height + " | " + deadCursor.x*width + " " + deadCursor.y*height);
                if ( this.dist(deadCursor.x*width, deadCursor.y*height, w.x*width, w.y*height, 1, 1) < 200) {
-                  System.err.println("HX.1 ");   
+                  //System.err.println("HX.1 ");   
                   return;
                }
             }
@@ -334,7 +334,7 @@ public class TUIOListener implements TuioListener {
          
          // Register a point for hover effects
          // synchronized(SSM.hoverPoints) { SSM.hoverPoints.put(o.getSessionID(), new DCTriple(posX, posY, 0)); }
-         System.err.println("=== Adding TUIO Cursor [" + o.getSessionID() + "," + w.element+"] " + w.x + " " + w.y);
+         //System.err.println("=== Adding TUIO Cursor [" + o.getSessionID() + "," + w.element+"] " + w.x + " " + w.y);
          eventTable.put(o.getSessionID(), w);
          
          // Register a touch point
@@ -360,11 +360,11 @@ public class TUIOListener implements TuioListener {
       float height = SSM.windowHeight;
       // 1) Remove touch point jitters
       if (dist(wcursor.x, wcursor.y, o.getX(), o.getY(), width, height) < 1.0 && wcursor.element != SSM.ELEMENT_LENS_RIM && wcursor.element != SSM.ELEMENT_LENS_HANDLE && wcursor.element != SSM.ELEMENT_DOCUMENT) {
-         System.err.println("H1 " + eventTable.size());
+         //System.err.println("H1 " + eventTable.size());
          return;   
       }
       if (dist(wcursor.x, wcursor.y, o.getX(), o.getY(), width, height) < 4.0 && wcursor.element == SSM.ELEMENT_DOCUMENT) {
-         System.err.println("H1 " + eventTable.size());
+         //System.err.println("H1 " + eventTable.size());
          return;   
       }
       
@@ -374,7 +374,7 @@ public class TUIOListener implements TuioListener {
       if (wcursor.numUpdate < 1 && wcursor.element != SSM.ELEMENT_LENS && wcursor.element != SSM.ELEMENT_LENS_RIM && wcursor.element != SSM.ELEMENT_LENS_HANDLE ) {
          //if ( o.getTuioTime().getTotalMilliseconds() - wcursor.timestamp < 350)  {
             if (dist(wcursor.x, wcursor.y, o.getX(), o.getY(), width, height) < 20) {
-               System.err.println("H4 " + eventTable.size());
+               //System.err.println("H4 " + eventTable.size());
                return;   
             }
          //}
@@ -382,7 +382,7 @@ public class TUIOListener implements TuioListener {
       // 4.1) Lens Update: Reinforce intention to actually move for lens
       if (wcursor.numUpdate < 1 && (wcursor.element == SSM.ELEMENT_LENS || wcursor.element == SSM.ELEMENT_LENS_RIM)) {
          if ( o.getTuioTime().getTotalMilliseconds() - wcursor.timestamp < 200)  {
-            System.err.println("H4.1 " + eventTable.size());
+            //System.err.println("H4.1 " + eventTable.size());
             return;
          }
       }
@@ -411,7 +411,7 @@ public class TUIOListener implements TuioListener {
       int y2 = (int)(wcursor.y*SSM.windowHeight);
       
       
-      System.err.println("=== Updating TUIO Cursor : [" + o.getSessionID() + "] ");
+      //System.err.println("=== Updating TUIO Cursor : [" + o.getSessionID() + "] ");
       wcursor.points.add( o.getPosition() );
       wcursor.numUpdate++;
       wcursor.updTimestamp = System.currentTimeMillis();
@@ -558,7 +558,7 @@ public class TUIOListener implements TuioListener {
       if (w == null) return;
       
       
-      System.err.println("=== Removing TUIO Cursor [" + o.getSessionID() + "] " + w.points.size());
+      //System.err.println("=== Removing TUIO Cursor [" + o.getSessionID() + "] " + w.points.size());
       
       
       // Remove scrolling indicator if on document
@@ -603,7 +603,7 @@ public class TUIOListener implements TuioListener {
          if (len.size() == 1 && SSM.presentationMode == false) {
             if (len.size() == 1 && (len.elementAt(0).state == WCursor.STATE_HOLD && len.elementAt(0).points.size() < 10 )) {
                // Adjust the lens coordinate such that the 2 points are on the circumference of the lens
-               System.out.print("activate lens");   
+               //System.out.print("activate lens");   
                float xx = w.x*SSM.windowWidth;
                float yy = w.y*SSM.windowHeight;
                
@@ -659,7 +659,7 @@ public class TUIOListener implements TuioListener {
             // Only set a tap if the touch point is "fresh", that is, the touch points are
             // within certain time limits
             //if (o.getTuioTime().getTotalMilliseconds() - w.timestamp < 1000) {
-               System.out.println("\tSending out tap event");
+               //System.out.println("\tSending out tap event");
                
                if (w.endTimestamp - w.startTimestamp > SSM.HOLD_DELAY) {
                   if (w.element == SSM.ELEMENT_DOCUMENT && SSM.docActive == true) {
