@@ -6,6 +6,14 @@ import java.io.File;
 // Mostly just try to make it easier to point to different variations
 public class Const {
    
+   ////////////////////////////////////////////////////////////////////////////
+   // Path for file generation
+   ////////////////////////////////////////////////////////////////////////////
+   public static final String DB_GROUP_FILE = "group.txt";
+   public static final String DB_PART_FILE = "part.txt";
+   public static final String DB_DATA = "data.txt";
+   public static final String DB_RELATION = "relation.txt";
+   public static final String DB_RELATION_OPT = "relation_opt.txt";
          
    ////////////////////////////////////////////////////////////////////////////
    // Path for parser

@@ -269,20 +269,35 @@ public class ModelRenderer extends BaseModelRenderer {
             setPerspectiveView(gl2, la.nearPlane, la.farPlane); {
                basicTransform(gl2);
                gl2.glEnable(GL2.GL_BLEND);
-               this.ProcessDualPeeling(gl2, la.displayList);
+               if (SSM.useDualDepthPeeling == true)
+                  this.ProcessDualPeeling(gl2, la.displayList);
             }
             
-            la.mlen.startRecording(gl2); {
-               //this.RenderDualPeeling(gl2, la.displayList);
-               this.RenderDualPeeling(gl2, la.displayList);
-               
-               gl2.glEnable(GL2.GL_BLEND);
-               gl2.glDisable(GL2.GL_DEPTH_TEST);
-               setPerspectiveView(gl2, 0.01f, la.nearPlane); {
-                  basicTransform(gl2);
-                  renderSil(gl2);   
-               }               
-            } la.mlen.stopRecording(gl2);
+            if (SSM.useDualDepthPeeling == true) {
+               la.mlen.startRecording(gl2); {
+                  //this.RenderDualPeeling(gl2, la.displayList);
+                  this.RenderDualPeeling(gl2, la.displayList);
+                  
+                  gl2.glEnable(GL2.GL_BLEND);
+                  gl2.glDisable(GL2.GL_DEPTH_TEST);
+                  setPerspectiveView(gl2, 0.01f, la.nearPlane); {
+                     basicTransform(gl2);
+                     renderSil(gl2);   
+                  }               
+               } la.mlen.stopRecording(gl2);
+            } else {
+               la.mlen.startRecording(gl2); {
+                  setPerspectiveView(gl2, la.nearPlane, la.farPlane); {
+                     basicTransform(gl2);
+                     gl2.glEnable(GL2.GL_BLEND);
+                     renderColourRamp(gl2, la);
+                  }
+                  setPerspectiveView(gl2, 0.01f, la.nearPlane); {
+                     basicTransform(gl2);
+                     renderSil(gl2);   
+                  }
+               } la.mlen.stopRecording(gl2);
+            }
             
             
             /*

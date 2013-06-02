@@ -35,7 +35,7 @@ public class CacheManager {
    public static int timeLineStartYear = 1995;
    public static int timeLineEndYear   = 2011;
    
-   public static boolean DEBUG = true;
+   public static boolean DEBUG = false;
 //   public static boolean DEBUG = false;
    
 //   public static void main(String argsp[]) {
@@ -250,16 +250,20 @@ System.out.println("Debugging");
          }
          
          start = System.currentTimeMillis();
-         rs    = dbh.execute(sql, true);
+         rs    = dbh.execute(sql);
          while(rs.next()) {
-            Date datea   = rs.getDate(1);
+            
+            //String datea   = rs.getString(1);
+            Date date = DCUtil.sdfOut.parse(rs.getString(1));
             int groupid   = rs.getInt(2);
             String mfr_txt   = rs.getString(3);
             String make_txt  = rs.getString(4);
             String model_txt = rs.getString(5);
             String year_txt = rs.getString(6);
             int cmplid = rs.getInt(7);
-            Integer idx = this.getDateKey( DCUtil.formatDateYYYYMMDD( datea ));
+            
+            
+            Integer idx = this.getDateKey( DCUtil.formatDateYYYYMMDD( date ));
             if (idx == null) continue;
             
             
@@ -326,8 +330,9 @@ System.out.println("Debugging");
             counter++;
             if (counter % 30000 == 0) System.out.println("Processed " + counter + " records");
          }
-         System.out.println("Processed " + counter + " records");
+         System.out.println("Processed " + counter + " records\n\n");
          end   = System.currentTimeMillis();
+         
          
          /*
          if (DEBUG) {
@@ -344,6 +349,7 @@ System.out.println("Debugging");
          System.exit(0);
       }
       
+     
       // Attemp to save some memory
       dupe.clear();
       dupe = null;
@@ -384,13 +390,13 @@ System.out.println("Debugging");
             }
             tagTable.get(id).add(new DCTag(id, groupId, start, end));            
             
-            /*
+            
             if (numTags % 10000 == 0) {
                System.out.println("Num Tags : " + numTags);
-            }*/
+            }
          }
          
-         //System.out.println("Num Tags : " + numTags);
+         System.out.println("Num Tags : " + numTags);
          System.out.println("Done creating tag table");
          rs.close();
          rs = null;
@@ -442,14 +448,19 @@ System.out.println("Debugging");
       Vector<DCDoc> result = new Vector<DCDoc>();
       DBWrapper dbh = new DBWrapper();
       try {
+         fromMonth+=1;
+         toMonth+=1;
+         String fromMonthStr = fromMonth >= 10? ""+fromMonth : "0" + fromMonth;
+         String toMonthStr   = toMonth   >= 10? ""+toMonth: "0" + toMonth;
+         
          // Static clause
          //String sql = "SELECT a.cmplid, a.cdescr  " +   
          String sql = "SELECT a.cmplid, a.datea, a.mfr_txt, a.make_txt, a.model_txt, a.year_txt, a.cdescr " +
                       "FROM cmp_clean a " +
                       "WHERE a.datea >= '" + DCUtil.formatDateStr(from) + "' " +
                       "AND   a.datea <= '" + DCUtil.formatDateStr(to) + "' " +
-                      "AND   MONTH(a.datea) >= " + (fromMonth+1) + " " +
-                      "AND   MONTH(a.datea) <= " + (toMonth+1) + " ";
+                      "AND   strftime('%m', replace(a.datea, '/', '-')) >= '" + fromMonthStr + "' " +
+                      "AND   strftime('%m', replace(a.datea, '/', '-')) <= '" + toMonthStr + "' ";
          
          // Dynamic clause filter
          if (SSM.useComparisonMode == true ) {
@@ -515,7 +526,7 @@ System.out.println("Debugging");
          ResultSet rs = dbh.execute( sql, true );
          while (rs.next()) {
             int id  = rs.getInt(1);
-            Date date = rs.getDate(2);
+            Date date = DCUtil.sdfOut.parse(rs.getString(2));
             String mfr = rs.getString(3);
             String make = rs.getString(4);
             String model = rs.getString(5);
@@ -535,18 +546,22 @@ System.out.println("Debugging");
    }   
    
    public Vector<DCDoc> setDocumentData(String from, String to, int fromMonth, int toMonth, Vector<Integer> groupIds, int idx) {
-System.out.println("SetDocumentData : " + from + " " + to);      
       Vector<DCDoc> result = new Vector<DCDoc>();
       DBWrapper dbh = new DBWrapper();
       try {
+         fromMonth+=1;
+         toMonth+=1;
+         String fromMonthStr = fromMonth >= 10? ""+fromMonth : "0" + fromMonth;
+         String toMonthStr   = toMonth   >= 10? ""+toMonth: "0" + toMonth;
+         
          // Static clause
          //String sql = "SELECT a.cmplid, a.cdescr  " +   
          String sql = "SELECT a.cmplid, a.datea, a.mfr_txt, a.make_txt, a.model_txt, a.year_txt, a.cdescr " +
                       "FROM cmp_clean a " +
                       "WHERE a.datea >= '" + DCUtil.formatDateStr(from) + "' " +
                       "AND   a.datea <= '" + DCUtil.formatDateStr(to) + "' " +
-                      "AND   MONTH(a.datea) >= " + (fromMonth+1) + " " +
-                      "AND   MONTH(a.datea) <= " + (toMonth+1) + " ";
+                      "AND   strftime('%m', replace(a.datea, '/', '-')) >= '" + fromMonthStr + "' " +
+                      "AND   strftime('%m', replace(a.datea, '/', '-')) <= '" + toMonthStr + "' ";
          
          // Dynamic clause filter
          if (SSM.useComparisonMode == true ) {
@@ -613,7 +628,7 @@ System.out.println("SetDocumentData : " + from + " " + to);
          ResultSet rs = dbh.execute( sql, true );
          while (rs.next()) {
             int id  = rs.getInt(1);
-            Date date = rs.getDate(2);
+            Date date = DCUtil.sdfOut.parse(rs.getString(2));
             String mfr = rs.getString(3);
             String make = rs.getString(4);
             String model = rs.getString(5);

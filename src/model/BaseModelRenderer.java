@@ -15,7 +15,6 @@ import javax.media.opengl.glu.GLU;
 
 import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
-import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
 import util.GraphicUtil;
@@ -76,11 +75,12 @@ public abstract class BaseModelRenderer implements RenderTask {
          MM.instance().loadModels();
          
          
-         InitDualPeelingRenderTargets(gl2);
-         
-         gl2.glBindFramebuffer(GL2.GL_FRAMEBUFFER, 0);
-         BuildShaders(gl2);
-         this.g_quadDisplayList = MakeFullScreenQuad(gl2);
+         if (SSM.useDualDepthPeeling == true) {
+            InitDualPeelingRenderTargets(gl2);
+            gl2.glBindFramebuffer(GL2.GL_FRAMEBUFFER, 0);
+            BuildShaders(gl2);
+            g_quadDisplayList = MakeFullScreenQuad(gl2);
+         }
          
          gl2.glDisable(GL2.GL_CULL_FACE);
          gl2.glDisable(GL2.GL_LIGHTING);

@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import TUIO.TuioClient;
 
 import touch.TUIOListener;
-import util.ALogger;
 import datastore.CacheManager;
 import datastore.Const;
 import datastore.SSM;
@@ -153,7 +152,6 @@ public class ProjectDriver {
       frame.addWindowListener(new WindowAdapter() { 
          public void windowClosing(WindowEvent e) {
             System.out.println("Shutting down....");
-            ALogger.instance().cleanup();
             System.exit(0); 
          }
       });

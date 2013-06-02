@@ -13,7 +13,6 @@ import model.DCTriple;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
-import util.ALogger;
 import util.DCUtil;
 import TimingFrameExt.DoubleArrayEval;
 import TimingFrameExt.DoubleEval;
@@ -652,8 +651,6 @@ System.out.println("In Unfocus");
          SSM.t2Start = SSM.globalFetchSize;
          SSM.yoffset = SSM.docHeight;         
          
-         // Hack
-         ALogger.instance().log("Time Widget :" + SSM.startYear + " " + SSM.endYear + " " + SSM.startMonth + " " + SSM.endMonth); 
       }
       SSM.startTimeFrame = str_lowIdx;
       SSM.endTimeFrame   = str_highIdx;

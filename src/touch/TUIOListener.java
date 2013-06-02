@@ -8,7 +8,6 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 import model.DCTriple;
 import model.LensAttrib;
 
-import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
 
@@ -566,6 +565,7 @@ public class TUIOListener implements TuioListener {
       
       
       // Big Brother Stuff - tracking interaction movements
+      /*
       if (w.element == SSM.ELEMENT_LENS || w.element == SSM.ELEMENT_LENS_RIM || w.element == SSM.ELEMENT_LENS_HANDLE)  {
          if (w.state == WCursor.STATE_MOVE) {
             ALogger.instance().log( "[Lens Move] " + (System.currentTimeMillis() - w.startTimestamp));
@@ -581,6 +581,7 @@ public class TUIOListener implements TuioListener {
             //ALogger.instance().log("[Click]");
          }
       }
+      */
       
       
       

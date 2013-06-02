@@ -18,7 +18,6 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 import TimingFrameExt.FloatEval;
 
 import model.DCTriple;
-import util.ALogger;
 import util.DCCamera;
 import datastore.MM;
 import datastore.SSM;
@@ -357,7 +356,6 @@ public class EventManager implements KeyListener, MouseListener, MouseMotionList
       }
       
       if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-         ALogger.instance().cleanup();
          System.out.println("ESC exit...");
          System.exit(0);
       }

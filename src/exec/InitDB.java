@@ -7,7 +7,6 @@ import datastore.SSM;
 import parser.HierarchyParser;
 import parser.KeywordParser;
 import parser.Normalizer;
-import util.TableLoader;
 
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -38,9 +37,9 @@ public class InitDB {
       //boolean useReplacement = true;
       boolean useReplacement = true;
       Vector<String> whiteList = new Vector<String>();
-      whiteList.add("GENERAL MOTORS CORP.");
-      whiteList.add("FORD MOTOR COMPANY");
-      whiteList.add("DAIMLERCHRYSLER CORPORATION");
+      //whiteList.add("GENERAL MOTORS CORP.");
+      //whiteList.add("FORD MOTOR COMPANY");
+      //whiteList.add("DAIMLERCHRYSLER CORPORATION");
       whiteList.add("TOYOTA MOTOR CORPORATION");
       
       /*
@@ -70,12 +69,8 @@ public class InitDB {
       try {
          System.out.println("\n\nStarting phase 1");
          hierarchyParser.createDBTable();
-         System.out.println("\nStarting database load...");
-         rc = TableLoader.loadData2Table(fileDir + "part.txt",  InitDB.getTable("grp"), true);   
-         if (rc != 0) throw new Exception("Data load failed");
          
-         rc = TableLoader.loadData2Table(fileDir + "group.txt", InitDB.getTable("grp_hier"), true);   
-         if (rc != 0) throw new Exception("Data load failed");
+         
       } catch (Exception e) {
          e.printStackTrace();   
          System.exit(0);
@@ -91,9 +86,6 @@ public class InitDB {
          //normalizer.parse(Const.DATA_FILE, 0, null);   
          normalizer.parse(Const.DATA_FILE, 0, whiteList, useReplacement);   
          
-         System.out.println("\nStarting database load...");
-         rc = TableLoader.loadData2Table(fileDir + "cmp_clean.txt", InitDB.getTable("cmp_clean"), true);  
-         if (rc != 0) throw new Exception("Data load failed");
       } catch (Exception e) {
          e.printStackTrace();   
          System.exit(0);
@@ -109,11 +101,6 @@ public class InitDB {
          //keywordParser.parseKeyword(70146); -- steering wheel
          keywordParser.parseKeyword(-1);
          
-         System.out.println("\nStarting database load...");
-         rc = TableLoader.loadData2Table(fileDir + "new_cmp_x_grp.txt", InitDB.getTable("cmp_x_grp"), true);  
-         if (rc != 0) throw new Exception("Data load failed");
-         rc = TableLoader.loadData2Table(fileDir + "opt.txt", InitDB.getTable("cmp_x_grp_clean"), true);  
-         if (rc != 0) throw new Exception("Data load failed");
       } catch (Exception e) {
          e.printStackTrace();
          System.exit(0);

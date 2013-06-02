@@ -75,7 +75,7 @@ public class Normalizer {
       int counter = 0;
       try {
          reader = DCUtil.openReader(filename);    
-         writer = DCUtil.openWriter("cmp_clean.txt");
+         writer = DCUtil.openWriter( Const.DB_DATA );
          sdfIn  = new SimpleDateFormat("yyyymmdd");
          sdfOut = new SimpleDateFormat("yyyy/mm/dd");
          

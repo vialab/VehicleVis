@@ -72,7 +72,7 @@ public class HierarchyParser {
       }
   
       // Print
-      BufferedWriter groupWriter = DCUtil.openWriter("group.txt");
+      BufferedWriter groupWriter = DCUtil.openWriter(Const.DB_GROUP_FILE);
       Enumeration<Integer> e1 = groupTable.keys();
       while (e1.hasMoreElements()) {
          Integer key = e1.nextElement();
@@ -82,7 +82,7 @@ public class HierarchyParser {
       groupWriter.close();
       
       
-      BufferedWriter partWriter = DCUtil.openWriter("part.txt"); 
+      BufferedWriter partWriter = DCUtil.openWriter(Const.DB_PART_FILE); 
       Enumeration<Integer> e2 = partTable.keys();
       while (e2.hasMoreElements()) {
         Integer key = e2.nextElement();

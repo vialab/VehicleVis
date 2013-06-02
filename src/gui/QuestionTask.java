@@ -17,7 +17,6 @@ import model.DCColour;
 import datastore.Const;
 import datastore.SSM;
 
-import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
 import util.GraphicUtil;
@@ -154,6 +153,7 @@ public class QuestionTask implements RenderTask {
    // Generic logging procedure
    ////////////////////////////////////////////////////////////////////////////////
    public void log(Question q) {
+      /*
       ALogger.instance().log("Task: " + q.text() );
       ALogger.instance().log("Duration : " + (q.endTime-q.startTime));
       //ALogger.instance().log("Start Time: "+ q.startTime);
@@ -186,6 +186,7 @@ public class QuestionTask implements RenderTask {
       ALogger.instance().log("Total Lens Move   : " + SSM.lensMoveStat);
       ALogger.instance().log("Total Lens Resize : " + SSM.lensResizeStat);
       ALogger.instance().log("................................................................................");
+      */
       
       SSM.resetStat();
    }

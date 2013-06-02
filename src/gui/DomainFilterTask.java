@@ -21,7 +21,6 @@ import datastore.SSM;
 import datastore.SchemeManager;
 import db.QueryObj;
 
-import util.ALogger;
 import util.DCUtil;
 import util.GraphicUtil;
 import util.TextureFont;
@@ -727,8 +726,6 @@ public class DomainFilterTask implements RenderTask {
                }
             }            
             
-            // Hack
-            ALogger.instance().log( "Hierarchy Widget (" + widget.uLabel + ") :" + attrib.selected );
             
             // Hack 2
             widget.animator = PropertySetter.createAnimator(1100, widget, "height", new FloatEval(), widget.height, 0.0f); 

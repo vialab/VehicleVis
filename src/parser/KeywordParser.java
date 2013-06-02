@@ -1,8 +1,10 @@
 package parser;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -16,6 +18,7 @@ import org.tartarus.snowball.ext.porterStemmer;
 import util.DCUtil;
 import util.DWin;
 
+import datastore.Const;
 import datastore.SSM;
 import db.DBWrapper;
 
@@ -42,16 +45,18 @@ public class KeywordParser {
       //String s = "Windshield wipers are dangerous because of the furry cats on the elephant, says the gas gauge";
       //String s = "Bad gas gauge ia";
       //String s = "The driver's side automatic lap and shoulder belt latch will not release from the locked position, causing the seat belt to be inoperative. Please explain further details. *ak.";
-      String s = "When making a right hand turn, the steering wheel locked up, causing an accident. *ak.";
+      //String s = "When making a right hand turn, the steering wheel locked up, causing an accident. *ak.";
 
 //      System.out.println("Orig: " + s);
 //      s = sh.normalize(s);
 //      System.out.println("Mutated: " + s);
       
+      /*
       Vector<TagInfo> tagInfo = sh.tag2(0, normalize(s));
       for (int i=0; i < tagInfo.size(); i++) {
          tagInfo.elementAt(i).print();   
       }
+      */
       
       
       System.exit(0);
@@ -74,19 +79,20 @@ public class KeywordParser {
       pStat = new ParseStat();
       
       try {
-        DBWrapper dbh = new DBWrapper();   
-        ResultSet rs = dbh.execute( "select name, groupId from " + SSM.database + ".grp order by char_length(name) desc" );
-        while (rs.next()) {
-           String word = rs.getString(1);
+        BufferedReader reader = DCUtil.openReader(Const.DB_PART_FILE);
+        
+        String line = "";
+        while ( (line = reader.readLine()) != null) {
+           int groupId = Integer.parseInt(line.split("\t")[0]);
+           String word = line.split("\t")[1];
+           	
            word = word.trim();
            word = word.replaceAll("\\n", "");
            word = word.replaceAll("-", " ");
            
            // Remove the under scores so we can normalize it properly
            word = word.replaceAll("_", " ");
-           
            String stem = normalize(word);
-           int groupId = rs.getInt(2);
            
            System.out.println( groupId  + ": [" + word + "]\t" + stem);
            stemList.add( new T(word, stem, groupId) );
@@ -95,25 +101,53 @@ public class KeywordParser {
          e.printStackTrace();
          System.exit(0);
       }
+      
+      // dirty sort
+      T temp[] = new T[ stemList.size() ];
+      for (int i=0; i < stemList.size(); i++) temp[i] = stemList.elementAt(i);
+      
+      for (int i=0; i < temp.length; i++) {
+         for (int j=0; j < temp.length; j++) {
+            if (temp[i].word.length() >= temp[j].word.length()) {
+               T t2 = temp[i];
+               temp[i] = temp[j];
+               temp[j] = t2;
+            }
+         }
+      }
+      stemList.clear();
+      stemList.addAll( Arrays.asList(temp));
+      
+      for (int i=0; i < stemList.size(); i++) {
+         System.out.println(stemList.elementAt(i).word);
+      }
+      
    }
    
    
    public void parseKeyword(int id) throws Exception {
-      DBWrapper dbh = new DBWrapper();   
-      String sql = "select cmplid, cdescr from " + SSM.database + ".cmp_clean ";
-      if (id != -1 ) sql += " where cmplid = " + id;
+      //DBWrapper dbh = new DBWrapper();   
+      //String sql = "select cmplid, cdescr from " + SSM.database + ".cmp_clean ";
+      //if (id != -1 ) sql += " where cmplid = " + id;
       
-      ResultSet rs = dbh.execute( sql ); 
+      //ResultSet rs = dbh.execute( sql ); 
       
-      BufferedWriter writer  = DCUtil.openWriter("new_cmp_x_grp.txt");
-      BufferedWriter writer2 = DCUtil.openWriter("opt.txt"); 
+      BufferedWriter writer  = DCUtil.openWriter(Const.DB_RELATION);
+      BufferedWriter writer2 = DCUtil.openWriter(Const.DB_RELATION_OPT);
       
-      while (rs.next()) {
-         int cmplid = rs.getInt(1);   
-         String txt = rs.getString(2);
+      BufferedReader reader = DCUtil.openReader(Const.DB_DATA);
+      
+      String line = "";
+      
+      //while (rs.next()) {
+      while ( (line=reader.readLine()) != null ) {
+         //int cmplid = rs.getInt(1);   
+         //String txt = rs.getString(2);
+         int cmplid = Integer.parseInt(line.split("\t")[0]);
+         String txt = line.split("\t")[6];
+         
          String txt_n = normalize(txt);
          Vector<TagInfo> t = tag2(cmplid, txt_n);
-//System.out.println("> " + txt);
          Hashtable<Integer, Integer> tmp = new Hashtable<Integer, Integer>();
          for (int i=0; i < t.size(); i++) {
             t.elementAt(i).print();                   

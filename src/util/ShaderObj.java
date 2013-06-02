@@ -219,7 +219,7 @@ public class ShaderObj {
                default: System.exit(0);
             }
          } else {
-            System.exit(0);
+            //System.exit(0);
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -289,7 +289,7 @@ public class ShaderObj {
          byte[] abInfoLog = new byte[params[0]];
          gl2.glGetProgramInfoLog(programID, params[0], params, 0, abInfoLog, 0);
          System.err.println( new String(abInfoLog) );      
-         System.exit(0);
+         //System.exit(0);
       }       
       return true;   
    }

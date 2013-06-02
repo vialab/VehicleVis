@@ -11,7 +11,6 @@ import model.DCTriple;
 import model.LensAttrib;
 import model.PaneAttrib;
 import touch.WCursor;
-import util.ALogger;
 import util.DCCamera;
 import util.DCUtil;
 import util.MatrixUtil;
@@ -797,10 +796,8 @@ public class Event {
          int id = selection.elementAt(i);
          if (SSM.selectedGroup.contains(id)) {
             SSM.selectedGroup.remove(id);
-            ALogger.instance().log( "Removing " + id+ " " + HierarchyTable.instance().partTable.get( id ).toString()) ;
          } else {
             SSM.selectedGroup.put(id, id);
-            ALogger.instance().log( "Adding " + id + " " + HierarchyTable.instance().partTable.get( id ).toString()) ;
          }
       }
      
