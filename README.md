@@ -23,12 +23,13 @@ To database can be created using a loading script
 
 Running the vis
 ---
-`java -DUseDB=<db_location> -DUseTuio=[true|false] -DUseSlide=[slide_location] -jar VehicleVis.jar [[startYear] [endYear]]`
+`java -DUseDB=<db_location> -DUseTuio=[true|false] -DUseSlide=[slide_location] -DCheckGPU=[true|false] -jar VehicleVis.jar [[startYear] [endYear]]`
 
 
  - UseDb : Locatio of the generated sqlite3 database
  - UseTUIO : Whether to enable multitouch with TUIO, or use keyboard/mouse combination
  - UseSlide : Location of a presentation slide
+ - CheckGPU : Attempt to check if GPU is sufficient for OIT, will fall back to vanilla renderer if extensions cannot be found
 
  - startYear : specifies a starting time frame
  - endYear : specifies an ending time frame
