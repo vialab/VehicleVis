@@ -6,4 +6,9 @@ This is an optimized, trimmed down, and easily portable version of Daniel's proj
 There are two parts in this project: a database generator and the vis application. 
 
 Running the generator:
-'java -jar -DGenDB=true -DPart=<part_file> -DData=<data_file> -DWhiteList=[list] VehicleVis.jar`
+---
+'java -DGenDB=true -DPart=<part_file> -DData=<data_file> -DWhiteList=[list] -jar VehicleVis.jar'
+
+Running the vis
+---
+'java -DUseDB=<db_location> -DUseTuio=[true|false] -DUseSlide=[slide_location] -jar VehicleVis.jar [[startYear] [endYear]]
