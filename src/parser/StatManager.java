@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
+import datastore.Const;
 import datastore.HierarchyTable;
 
 // Singleton class to store statistics while parsing
@@ -43,7 +44,7 @@ public class StatManager {
       // Just testing for now
       ht = new HierarchyParser();
       try {
-         ht.createDBTable();
+         ht.createDBTable(Const.PART_FILE);
       } catch (Exception e) {}
       
       System.out.println("Creating priority part list...");

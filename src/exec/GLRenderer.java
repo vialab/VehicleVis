@@ -206,6 +206,12 @@ public class GLRenderer implements GLEventListener {
    public void init(GLAutoDrawable glDrawable) {
       GL2 gl2 = glDrawable.getGL().getGL2();
       
+      // Not sure if this will work or not for supported GPUs
+      boolean checkGPU = Boolean.parseBoolean(System.getProperty("CheckGPU", "false")); 
+      if ( checkGPU && ! gl2.isExtensionAvailable("ARB_draw_buffers") ) {
+         System.out.println("Cannot find required extension for OIT, turing off dual-depth-peeling");
+         SSM.useDualDepthPeeling = false;
+      }
       
       
       

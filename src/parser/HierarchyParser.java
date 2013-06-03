@@ -20,6 +20,7 @@ import datastore.Const;
 ///////////////////////////////////////////////////////////////////////////////// 
 public class HierarchyParser {
    
+   /*
    public static void main(String args[]) {
       HierarchyParser hp = new HierarchyParser();
       try {
@@ -28,6 +29,7 @@ public class HierarchyParser {
          e.printStackTrace();
       }
    }
+   */
    
    
    public HierarchyParser() {
@@ -38,8 +40,9 @@ public class HierarchyParser {
    // Create an intial database table layout  
    // Do not use this method after the db data has finalized
    ////////////////////////////////////////////////////////////////////////////////
-   public int createDBTable() throws Exception {
-      BufferedReader reader = new BufferedReader(new FileReader(Const.PART_FILE));       
+   public int createDBTable(String partFile) throws Exception {
+//      BufferedReader reader = new BufferedReader(new FileReader(Const.PART_FILE));       
+      BufferedReader reader = new BufferedReader(new FileReader(partFile));       
       String line = "";
       
       int level;

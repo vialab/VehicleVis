@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -31,6 +32,23 @@ public class ProjectDriver {
    public static void main(String args[]) {
       Const.doRunTimeCheck();
       SSM.instance();
+      
+      // Reroute if necessary
+      boolean genDB = Boolean.parseBoolean(System.getProperty("GenDB", "false"));
+      if (genDB == true) {
+         String partTxt = System.getProperty("Part", "");
+         String dataTxt = System.getProperty("Data", "");
+         String list    = System.getProperty("WhiteList", null);
+         Vector<String> whiteList = null;
+         if (list != null) {
+            whiteList = new Vector<String>();
+            String l[] = list.split(":");   
+            for (int i=0; i < l.length; i++) whiteList.add(l[i]);
+         }
+         InitDB.createDBFiles(partTxt, dataTxt, whiteList, false);
+         System.exit(0);
+      }
+      
       
       
       

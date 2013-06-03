@@ -21,14 +21,32 @@ public class InitDB {
       return SSM.database + "." + s;   
    }
    
+   
+   public static void createDBFiles(String partFile, String rawFile, Vector<String> whiteList, boolean useReplacement) {
+      
+      try {
+         System.out.println("\n\nStarting phase 1");
+         HierarchyParser hierarchyParser = new HierarchyParser();
+         hierarchyParser.createDBTable(partFile);
+         
+         System.out.println("\n\nStarting phase 2");
+         Normalizer normalizer = new Normalizer();
+         normalizer.parse(rawFile, 0, whiteList, useReplacement);   
+         
+         System.out.println("\n\nStarting phase 3");
+         KeywordParser keywordParser = new KeywordParser();
+         keywordParser.parseKeyword(-1);
+      } catch (Exception e) {
+         e.printStackTrace();   
+         System.exit(0);
+      }
+   }
+   
+   
    public static void main(String args[]) {
       HierarchyParser hierarchyParser = new HierarchyParser();
       Normalizer normalizer = new Normalizer();
       KeywordParser keywordParser = new KeywordParser();
-      
-      int rc = 0;
-      
-      String fileDir = "C:\\Users\\Daniel\\VehicleVis\\";
       
       
       // Build a white list here - anything outside of the
@@ -68,9 +86,7 @@ public class InitDB {
       ////////////////////////////////////////////////////////////////////////////////
       try {
          System.out.println("\n\nStarting phase 1");
-         hierarchyParser.createDBTable();
-         
-         
+         hierarchyParser.createDBTable(Const.PART_FILE);
       } catch (Exception e) {
          e.printStackTrace();   
          System.exit(0);

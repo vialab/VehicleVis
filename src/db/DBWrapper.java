@@ -52,8 +52,6 @@ public class DBWrapper {
       long startTime = System.currentTimeMillis();
       ResultSet rs = null;
       
-      Class.forName("org.sqlite.JDBC");
-      conn = DriverManager.getConnection("jdbc:sqlite:test.db");
       stmt = conn.createStatement();
       stmt.setQueryTimeout(60);
       
@@ -70,9 +68,10 @@ public class DBWrapper {
    public Connection getConnection(String url, String username, String password) throws Exception {
       //Class.forName("com.mysql.jdbc.Driver").newInstance();
       Class.forName("org.sqlite.JDBC");
-      //Connection conn = null;
+      //conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+      
       try {
-         conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+         conn = DriverManager.getConnection("jdbc:sqlite:" + SSM.dbLocation);
       } catch (Exception e) {
          // Just pass it up
          e.printStackTrace();

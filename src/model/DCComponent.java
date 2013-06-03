@@ -169,7 +169,7 @@ public class DCComponent extends DCObj {
       Vector<Integer> c = HierarchyTable.instance().getGroupId(baseName);
       if (c != null && c.size() > 0) {
          //System.out.println(">>>> Setting sparkline id : " + c.elementAt(0));
-      	System.out.println(">>> Setting component/group id for : " + baseName);
+      	//System.out.println(">>> Setting component/group id for : " + baseName);
          cchart.id = c.elementAt(0);
          id = c.elementAt(0);
       } else {
@@ -894,8 +894,8 @@ public class DCComponent extends DCObj {
       // Generate vertex buffer
       gl2.glGenBuffers(4, vbo, 0);         
       
-      System.out.println("VBO Ids for " + cname + ": " + vao[0] + "\t" + vbo[0] + "\t" + vbo[1]);
-      System.out.println("");
+      //System.out.println("VBO Ids for " + cname + ": " + vao[0] + "\t" + vbo[0] + "\t" + vbo[1]);
+      //System.out.println("");
       
       nBuffer.flip();
       vBuffer.flip();

@@ -36,6 +36,9 @@ public class SSM {
    
    //public static String database = "demo";
    public static String database = "main";
+   public static String dbLocation = "test.db";
+   
+   public static boolean forceGPUChek = false;
    
    public static double HOLD_DELAY = 500;
    public static double INVALID_DELAY_FRAME = 50;
@@ -93,7 +96,7 @@ public class SSM {
       useFullScreen = Boolean.parseBoolean(System.getProperty("UseFullScreen", "true"));
       useScenario   = Boolean.parseBoolean(System.getProperty("UseScenario", "false"));
       
-      database      = (System.getProperty("UseDB", "main"));
+      dbLocation    = (System.getProperty("UseDB", "test.db"));
       
       slideFile = System.getProperty("UseSlide", "C:\\Users\\Daniel\\Pictures\\IMG_0917.jpg");
       
@@ -310,7 +313,7 @@ public class SSM {
    public static int sparklineMode = 1;
    public static boolean useAggregate = false;        // Whether the occurrence count should crawl the parts hierarchy
    public static boolean useFullTimeLine = true;      // Whether to use the entire timeline for the component chart
-   public static boolean useDualDepthPeeling = false;  // Whether to use OIT transparency
+   public static boolean useDualDepthPeeling = true;  // Whether to use OIT transparency
    public static boolean useConstantAlpha = false;    // Whether or not to use OIT constant alpha
    public static boolean useGlow = true;
    public static boolean useComparisonMode = false;   // Whether to compare across time lines
